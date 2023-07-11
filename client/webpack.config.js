@@ -15,36 +15,34 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      // Generate HTML files for your entry points
       new HtmlWebpackPlugin({
         template: './index.html',
-        chunks: ['main'],
         filename: 'index.html',
+        chunks: ['main'],
       }),
-      // Generate a manifest file for your Progressive Web App (PWA)
       new WebpackPwaManifest({
-        name: 'My App',
-        short_name: 'App',
-        description: 'My awesome app',
+        fingerprints: false,
+        inject: false,
+        name: 'My Progressive Web App',
+        short_name: 'MyPWA',
+        description: 'My awesome Progressive Web App!',
         background_color: '#ffffff',
-        theme_color: '#2196f3',
+        start_url: '/',
+        display: 'standalone',
         icons: [
           {
             src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
-          },
-        ],
+            destination: path.join('assets', 'icons')
+          }
+        ]
       }),
-      // Inject the service worker script into your HTML files
       new InjectManifest({
         swSrc: './src-sw.js',
-        swDest: 'src-sw.js',
-        exclude: [/\.map$/, /manifest\.json$/],
-      }),
+      })
     ],
     module: {
       rules: [
-        // Add CSS loaders and Babel configuration
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],

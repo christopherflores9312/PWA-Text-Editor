@@ -1,8 +1,9 @@
-import { precacheAndRoute } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { CacheFirst } from 'workbox-strategies';
-import { CacheableResponsePlugin } from 'workbox-cacheable-response';
-import { ExpirationPlugin } from 'workbox-expiration';
+const { offlineFallback, warmStrategyCache } = require('workbox-recipes');
+const { CacheFirst } = require('workbox-strategies');
+const { registerRoute } = require('workbox-routing');
+const { CacheableResponsePlugin } = require('workbox-cacheable-response');
+const { ExpirationPlugin } = require('workbox-expiration');
+const { precacheAndRoute } = require('workbox-precaching/precacheAndRoute');
 
 precacheAndRoute(self.__WB_MANIFEST);
 
@@ -18,24 +19,32 @@ const pageCache = new CacheFirst({
   ],
 });
 
-registerRoute(
-  ({ request }) => request.mode === 'navigate',
-  pageCache
-);
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open('static-cache').then((cache) => {
+      return cache.addAll([
+        './index.html', // Add any other important URLs to cache during installation
+      ]);
+    })
+  );
+});
 
+warmStrategyCache({
+  urls: ['/index.html', '/'],
+  strategy: pageCache,
+});
+
+registerRoute(({ request }) => request.mode === 'navigate', pageCache);
+
+// Cache CSS and JavaScript files
 registerRoute(
-  ({ request }) =>
-    request.destination === 'script' ||
-    request.destination === 'style' ||
-    request.destination === 'image',
+  /\.(?:js|css)$/,
   new CacheFirst({
     cacheName: 'asset-cache',
     plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
       new ExpirationPlugin({
-        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
       }),
     ],
   })
