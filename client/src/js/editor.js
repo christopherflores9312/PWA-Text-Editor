@@ -34,9 +34,15 @@ export default class {
     });
 
     // Save the content of the editor when the editor itself is loses focus
-    this.editor.on('blur', () => {
+    this.editor.on('blur', (event) => {
+      const clickedButton = event.relatedTarget;
+      if (clickedButton && clickedButton.id === 'buttonInstall') {
+        console.log('The "Install" button was clicked, skipping save');
+        return;
+      }
       console.log('The editor has lost focus');
       putDb(localStorage.getItem('content'));
     });
+    
   }
 }

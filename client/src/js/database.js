@@ -3,32 +3,40 @@ import { openDB } from 'idb';
 const initdb = async () =>
   openDB('jate', 1, {
     upgrade(db) {
-      if (db.objectStoreNames.contains('jate')) {
+      if (!db.objectStoreNames.contains('jate')) {
+        db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
+        console.log('jate database created');
+      } else {
         console.log('jate database already exists');
-        return;
       }
-      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
-      console.log('jate database created');
     },
   });
 
-// Method to add content to the database
+let db;
+
+const ensureDb = async () => {
+  if (!db) {
+    db = await initdb();
+  }
+};
+
+// Save some content to the database
 export const putDb = async (content) => {
-  const db = await openDB('jate', 1);
+  await ensureDb();
   const tx = db.transaction('jate', 'readwrite');
   const store = tx.objectStore('jate');
-  await store.add(content);
+  await store.put({ content });
   await tx.done;
 };
 
-// Method to get all content from the database
+// Get all the content from the database
 export const getDb = async () => {
-  const db = await openDB('jate', 1);
+  await ensureDb();
   const tx = db.transaction('jate', 'readonly');
   const store = tx.objectStore('jate');
-  const content = await store.getAll();
+  const items = await store.getAll();
   await tx.done;
-  return content;
+  return items;
 };
 
-initdb();
+ensureDb();
