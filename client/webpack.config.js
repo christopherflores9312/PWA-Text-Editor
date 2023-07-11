@@ -17,14 +17,9 @@ module.exports = () => {
     plugins: [
       // Generate HTML files for your entry points
       new HtmlWebpackPlugin({
-        template: './src/index.html',
+        template: './index.html',
         chunks: ['main'],
         filename: 'index.html',
-      }),
-      new HtmlWebpackPlugin({
-        template: './src/install.html',
-        chunks: ['install'],
-        filename: 'install.html',
       }),
       // Generate a manifest file for your Progressive Web App (PWA)
       new WebpackPwaManifest({
@@ -42,20 +37,18 @@ module.exports = () => {
       }),
       // Inject the service worker script into your HTML files
       new InjectManifest({
-        swSrc: './src/js/service-worker.js',
-        swDest: 'service-worker.js',
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
         exclude: [/\.map$/, /manifest\.json$/],
       }),
     ],
     module: {
       rules: [
-        // Add CSS loaders and Babel configuration if needed
-        // For example, if you want to process CSS and SCSS files:
+        // Add CSS loaders and Babel configuration
         {
-          test: /\.(css|scss)$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
         },
-        // Add Babel configuration for JavaScript files
         {
           test: /\.js$/,
           exclude: /node_modules/,
