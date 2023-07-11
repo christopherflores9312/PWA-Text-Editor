@@ -1,11 +1,11 @@
 {
   "name": "JATE",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "A PWA for creating and saving notes and code snippets.",
+  "main": "server/server.js",
   "scripts": {
     "start:dev": "",
-    "start": "",
+    "start": "node server/server.js",
     "server": "",
     "build": "",
     "install": "",
