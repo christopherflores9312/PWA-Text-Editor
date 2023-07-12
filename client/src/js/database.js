@@ -20,14 +20,15 @@ const ensureDb = async () => {
   }
 };
 
-// Save some content to the database
+// Save some content to the editor
 export const putDb = async (content) => {
   await ensureDb();
   const tx = db.transaction('jate', 'readwrite');
   const store = tx.objectStore('jate');
-  await store.put({ content });
+  await store.put({ content, id: 1 }); // Assuming only one item is stored and it always has id: 1
   await tx.done;
 };
+
 
 // Get all the content from the database
 export const getDb = async () => {
