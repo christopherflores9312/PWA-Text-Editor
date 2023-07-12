@@ -8,20 +8,6 @@ This application is a single-page text editor built with next-gen JavaScript and
 
 The application is structured with a client-server folder and bundled with webpack. It is deployed as a full-stack application on Heroku.
 
-## Acceptance Criteria
-
-- You should see a client-server folder structure when opening the application in the editor.
-- Running `npm run start` from the root directory starts up the backend and serves the client.
-- JavaScript files have been bundled using webpack.
-- Running webpack plugins generates an HTML file, a service worker, and a manifest file.
-- The application uses next-gen JavaScript and functions in the browser without errors.
-- Opening the text editor immediately creates a database storage with IndexedDB.
-- Entering content and subsequently clicking off the DOM window saves the content in the text editor with IndexedDB.
-- Reopening the text editor after closing it retrieves the content from IndexedDB.
-- Clicking on the Install button downloads the web application as an icon on the desktop.
-- Loading the web application registers a service worker using workbox.
-- Registering a service worker pre-caches the static assets upon loading along with subsequent pages and static assets.
-- Deploying to Heroku should have proper build scripts for a webpack application.
 
 ## Getting Started
 
