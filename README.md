@@ -54,6 +54,11 @@ Open the application in your web browser, start creating notes or code snippets.
 ### Deployment
 The application can be deployed to Heroku with a proper build script for a webpack application.
 
+### Example
+[CLICK HERE!](https://pwa-text-editor-9312-b4b9cc7dd634.herokuapp.com/) for a preview
+
+[![screenshot](./screenshot.png)](https://pwa-text-editor-9312-b4b9cc7dd634.herokuapp.com/)
+
 ### Built With
 -Node.js
 
